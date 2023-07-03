@@ -13,7 +13,7 @@ const app = express();
 
 // database setup
 mongoose.set("strictQuery", false);
-const mongoDB = "mongodb://127.0.0.1:27127/locallibrary";
+const mongoDB = "mongodb://localhost/locallibrary";
 main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(mongoDB);
@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("catalog", catalogRouter);
+app.use("/catalog", catalogRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
