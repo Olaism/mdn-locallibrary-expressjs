@@ -1,4 +1,8 @@
+const mongoose = require("mongoose");
 const Book = require("../models/book");
+const BookInstance = require("../models/bookinstance");
+const Author = require("../models/author");
+const Genre = require("../models/genre");
 
 const asyncHandler = require("express-async-handler");
 
@@ -39,7 +43,30 @@ exports.book_list = asyncHandler(async (req, res, next) => {
 
 // Display detail page for a specific book.
 exports.book_detail = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Book Detail ");
+  // Check if the ID is valid
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    const err = new Error("Invalid object id");
+    err.status = 404;
+    return next(err);
+  }
+
+  const [book, bookInstances] = await Promise.all([
+    Book.findById(req.params.id).populate("author").populate("genre").exec(),
+    BookInstance.find({ book: req.params.id }).exec(),
+  ]);
+
+  if (book === null) {
+    // No results
+    const err = new Error("Book not found.");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("book_detail", {
+    title: book.title,
+    book: book,
+    book_instances: bookInstances,
+  });
 });
 
 // Display book create form on GET.

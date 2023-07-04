@@ -1,0 +1,14 @@
+[
+  {
+    "book": "64a319b513f4871c2eb50584",
+    "imprint": "William Heinemann Ltd",
+    "status": "Loaned",
+    "due_back": "2023-07-10"
+  },
+  {
+    "book": "64a319b513f4871c2eb50585",
+    "imprint": "Oxford University press",
+    "status": "Available",
+    "due_back": ""
+  }
+]
