@@ -1,3 +1,4 @@
+const debug = require("debug")("author");
 const mongoose = require("mongoose");
 const Author = require("../models/author");
 const Book = require("../models/book");
@@ -17,6 +18,7 @@ exports.author_list = asyncHandler(async (req, res, next) => {
 exports.author_detail = asyncHandler(async (req, res, next) => {
   // check if the id is a valid id
   if (!mongoose.isValidObjectId(req.params.id)) {
+    debug(`Invalid ObjectID on detail_get - ${req.params.id}`);
     const err = new Error("Invalid ID");
     err.status = 404;
     return next(err);
@@ -30,6 +32,7 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
 
   if (author === null) {
     // No results
+    debug(`id not found on detail - ${req.params.id}`);
     const err = new Error("Author not found");
     err.status = 404;
     return next(err);

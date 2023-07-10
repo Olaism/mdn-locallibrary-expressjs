@@ -1,3 +1,4 @@
+const debug = require("debug")("book");
 const mongoose = require("mongoose");
 const Book = require("../models/book");
 const BookInstance = require("../models/bookinstance");
@@ -46,6 +47,7 @@ exports.book_list = asyncHandler(async (req, res, next) => {
 exports.book_detail = asyncHandler(async (req, res, next) => {
   // Check if the ID is valid
   if (!mongoose.isValidObjectId(req.params.id)) {
+    debug(`Invalid ObjectID on detail_get - ${req.params.id}`);
     const err = new Error("Invalid object id");
     err.status = 404;
     return next(err);
@@ -58,6 +60,7 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
 
   if (book === null) {
     // No results
+    debug(`ID not found on detail - ${req.params.id}`);
     const err = new Error("Book not found.");
     err.status = 404;
     return next(err);
